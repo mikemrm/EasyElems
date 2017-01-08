@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<title>EasyElems Sample page.</title>
+		<link rel="stylesheet" href="sample.css" type="text/css" />
+		<script src="sampleText.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../EasyElems.js"></script>
+		<script>
+			var page = EasyElems('div', {'classList.add()': 'holder'}, false, [
+				['div', {'classList.add()': 'header'}, false, [
+					['div', false, false, [
+						['div', {'classList.add()': 'logo'}, false, false, 'logo'],
+						['div', {'classList.add()': 'nav'}, false, [
+							['a', {innerHTML: 'Home'}, {href: '#Home'}, false, 'home'],
+							['a', {innerHTML: 'Services'}, {href: '#Services'}, false, 'services'],
+							['a', {innerHTML: 'About'}, {href: '#About'}, false, 'about'],
+							['a', {innerHTML: 'Contact Us'}, {href:'#Contacts'}, false, 'contact']
+						], 'nav']
+					]]
+				]],
+				['div', {innerHTML: 'Everything created was done with easyElems! Making it easy to create and edit elements!<hr />' + sampleText, 'classList.add()': 'main'}, false, [
+					['div', {'classList.add()': 'inlineImage'}, false, [
+						['img', {src: '//bootstrapbay.com/blog/wp-content/uploads/2014/05/yellow-taxi_vvvjao.png'}, {alt:'Yellow Taxi', width:'346', height:'259' }],
+						['text', {text: 'Yellow Taxi!'}]
+					], 'image'],
+					['div', {innerHTML: sampleText, 'classList.add()': 'mainText'}]
+				], 'main'],
+				['div', {id:'popupHolder', 'classList.add()': 'popupHolder'}, false, false, 'popupHolder']
+			]);
+
+			function lead0(num){
+				return (num < 10 ? '0' + num : num);
+			}
+
+			function displayPopup(e){
+				var d = new Date();
+				var showTime = (lead0(d.getMonth() + 1)) + "/" + lead0(d.getDate()) + "/" + d.getFullYear() + " " + lead0(d.getHours()) + ":" + lead0(d.getMinutes()) + ":" + lead0(d.getSeconds());
+
+				var popup_box = EasyElems('div', {'classList.add()': 'popupItem'}, false, [
+					['text', {text: 'Time: ' + showTime}],
+					['br'],
+					['text', {text: 'Using easyElems: ' + this.innerHTML}]
+				]);
+				console.log(popup_box);
+				page.$popupHolder.appendChild(popup_box);
+				window.setTimeout(function(){
+					popup_box.style.opacity = 1;
+				}, 1);
+				window.setTimeout(function(){
+					popup_box.style.opacity = 0;
+					window.setTimeout(function(){
+						popup_box.parentNode.removeChild(popup_box);
+					}, 300);
+				}, 4000);
+			}
+
+			for(var btn in page.$nav.childLinks){
+				page.$nav.childLinks[btn].addEventListener('click', displayPopup);
+			}
+
+			window.addEventListener('load', function(){
+				document.body.appendChild(page);
+			});
+		</script>
+	</head>
+	<body></body>
+</html>
