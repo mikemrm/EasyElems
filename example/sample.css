@@ -1,0 +1,85 @@
+html, body {
+	margin: 0px;
+	padding: 0px;
+}
+.holder {
+	position: relative;
+}
+.header {
+	position: relative;
+	background-color: rgb(184, 0, 0);
+}
+.header > div {
+	position: relative;
+	margin: 0 auto;
+	width: 900px;
+	height: 50px;
+}
+.logo {
+	width: 164px;
+	height: 41px;
+	background-image: url('logo.png');
+	background-repeat: no-repeat;
+}
+.nav {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	padding: 5px;
+}
+.nav > a {
+	display: inline-block;
+	padding: 10px;
+	text-decoration: none;
+	border: solid 1px rgb(225, 225, 225);
+	color: rgb(255, 255, 255);
+	margin: 0 5px;
+	border-radius: 10px;
+	-webkit-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+	-moz-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+	-ms-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+	-o-transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+	transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+.nav > a:hover {
+	background-color: rgb(60, 60, 60);
+	color: rgb(255, 255, 255);
+}
+.main {
+	margin: 0 auto;
+	width: 900px;
+}
+.inlineImage {
+	display: inline-block;
+	width: 350px;
+	float:left;
+}
+
+.popupHolder {
+	position: fixed;
+	right: 0px;
+	bottom: 0px;
+}
+.popupItem {
+	min-width: 200px;
+	padding: 5px;
+	border-top: solid 1px black;
+	border-left: solid 1px black;
+	background-color: rgb(180, 0, 0);
+	color: rgb(255, 255, 255);
+	opacity: 0;
+	-webkit-transition: opacity 0.3s ease-in-out;
+	-moz-transition: opacity 0.3s ease-in-out;
+	-ms-transition: opacity 0.3s ease-in-out;
+	-o-transition: opacity 0.3s ease-in-out;
+	transition: opacity 0.3s ease-in-out;
+}
+.popupItem > div:first-child {
+	padding: 2px;
+	color: rgb(220, 220, 220);
+}
+.popupItem > div:last-child {
+	padding: 5px;
+	color: rgb(255, 255, 255);
+}
