@@ -11,7 +11,7 @@
 		Element Keys	- Items to be set via element.key
 		Attributes		- Items to be set via key="value"
 		Children		- An array of children with the same argument structure
-		Link Name		- A child reference name. *Child arguments only*
+		Link Name		- A reference name.
 
 	Usage:
 
@@ -40,19 +40,20 @@
 
 		*Output*
 
-		> sample					- [object HTMLDivElement]
-		> sample.childLinks			- {username: div, password: div, options: div}
-		> sample.$username			- [object HTMLDivElement]
-		> sample.$username.$title	- [object HTMLDivElement]
-		> sample.$username.$input	- [object HTMLInputElement]
+		> sample						- [object HTMLDivElement]
+		> sample.childLinks				- {username: div, password: div, options: div}
+		> sample.$username				- [object HTMLDivElement]
+		> sample.$username.$title		- [object HTMLDivElement]
+		> sample.$username.$input		- [object HTMLInputElement]
+		> sample.$options.childLinks	- [text, input, input, input, input, input]
 		> ...
 	
-	Wiki:
+	GitHub:
 
-		<https://github.com/mikemrm/Cookbook/wiki/EasyElems_js>
+		<https://github.com/mikemrm/easyElems>
 */
 
-function EasyElems(tag, keys, attribs, children){
+function EasyElems(tag, keys, attribs, children, linkName){
 	function EasyElems_Exception(message){
 		this.message = message;
 		this.name = 'EasyElems_Exception';
@@ -188,6 +189,6 @@ function EasyElems(tag, keys, attribs, children){
 	} else {
 		if(arguments.length > 5)
 			throw new EasyElems_Exception('Invalid argument count.');
-		return Execute.call(this, 0, tag, keys, attribs, children);
+		return Execute.call(this, 0, tag, keys, attribs, children, linkName);
 	}
 }
