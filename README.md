@@ -1,44 +1,33 @@
-# easyElems
+# EasyElems
 Function for quickly creating a deep structure of html elements in javascript.
 
 For more information/examples check out:
 
-http://dev.mrm.land/mikemrm/javascript/EasyElems/
+http://dev.mrm.land/mikemrm/EasyElems/
 
 # Usage
 ```
-arguments: ee('string', {object/false}, {object/false}, [array/false], 'string/false');
-var newelem = ee('tagName', {'variable':'settings'}, {'attribute':'settings'}, [['childTagName'],['child2TagName'], 'quicklink');
+Root Arguments: EasyElems('string', {object/false}, {object/false}, [array/false], 'Link Name');
+var sample = EasyElems('tagName', {'variable':'settings'}, {'attribute':'settings'}, [
+    ['childTagName'],
+    ['child2TagName', false, false, false, 'child2']
+]);
 ```
-# Resulting Object
+### Returns the root object element with additional keys
 ```
-{
-  'root': '[object HTMLUnknownElement]',
-  'children': [
-    {
-      'root', '[object HTMLUnknownElement]',
-      'children', [],
-      'links', []
-    },{
-      'root', '[object HTMLUnknownElement]',
-      'children', [],
-      'links', []
-    }
-  ],
-  'links': [
-    'quicklink': '[object HTMLUnknownElement]'
-  ]
-}
+sample            - [object HTMLUnknownElement]
+sample.childLinks - {child2: child2tagname}
+sample.$child2    - [object HTMLUnknownElement]
 ```
 # Children
-Children take the same parameters as the main ee function. and are recursive. See Examples below.
+Children take the same parameters as the main EasyElems function. and are recursive. See Examples below.
 
 # Argument Breakdown
-There are 5 arguments that can be passed.
+There are 5 arguments that can be passed. 
 The first argument is a string with the Tag Name. This would be "div" or "table"
 The second argument is an object {'key': 'value'}
  - These are arguments are variables that get set such as
-  - ee('div', {'disabled': true}) would result in
+  - EasyElems('div', {'disabled': true}) would result in
    - mydiv.disabled = true;
 The third argument is also an object {'key': 'value'}
  - However these are attributes that get set with object.setAttribute('key', value);
@@ -50,17 +39,17 @@ The fifth argument is a string name that can be used for quick access later. See
 ## Required
 This is all that is needed to create a basic element.
 ```
-var basic = ee('div');
+var basic = EasyElems('div');
 ```
 ## Appending to established elements
 Taking the above example and expanding. This is how you would append the new element to an existing one.
 ```
-var basic = ee('div');
-document.body.appendChild(basic.root);
+var basic = EasyElems('div');
+document.body.appendChild(basic);
 ```
 ## Setting variables
 ```
-var setvars = ee('div', {'innerHTML':'Some Text','id': 'vardiv'});
+var setvars = EasyElems('div', {'innerHTML':'Some Text','id': 'vardiv'});
 ```
 Creates the following
 ```
@@ -72,20 +61,20 @@ setvars.id = 'vardiv';
 Similar to variables this is also an object however they get set with the object.setAttribute function.
 The only exception is the class argument. Instead of it being a string, it must be an array.
 ```
-var setattribs = ee('table', false, {'cellspacing':0,'class': ['maintable', 'centertable']});
+var setattribs = EasyElems('table', {'classList.add()': ['maintable', 'centertable']}, {'cellspacing':0});
 ```
 This creates the following:
 ```
 var setattribs = document.createElement('table');
 setattribs.setAttribute('cellspacing': 0);
-setattribs.setAttribute('class', 'maintable centertable');
+setattribs.classList.add('maintable', 'centertable');
 ```
 ## Adding Children
 Children take the same parameters as the main function does except using an array instead. 
 This is a recursive loop, so each child can have its own children.
 ```
-var mytable = ee('table', false, false, [
-  ['tbody, false, false, [
+var mytable = EasyElems('table', false, false, [
+  ['tbody', false, false, [
     ['tr', false, false, [
       ['td', {'innerHTML': 'My Name is Mike'}, {'id': 'nameholder'}],
       ['td', false, false, [
@@ -103,15 +92,15 @@ var mytable = ee('table', false, false, [
 ]);
 ```
 ## Link Names
-When you use this to create a lot of children you tend to loose track of where the children are.
+When you use EasyElems to create a lot of children you can lose track of how deep elements are.
 
 Taking the above example you could get the value of the text input box with:
 ```
-console.log(mytable.children[0].children[0].children[1].children[1].root.value);
+console.log(mytable.childNodes[0].childNodes[0].childNodes[1].childNodes[1].value);
 ```
-However that is hard to read so instead you can create links. Below is the same example with links.
+However that is hard to read, so instead you can create links. Below is the same example with links.
 ```
-var mytable = ee('table', false, false, [
+var mytable = EasyElems('table', false, false, [
   ['tbody', false, false, [
     ['tr', false, false, [
       ['td', {'innerHTML': 'My Name is Mike'}, {'id': 'nameholder'}],
@@ -131,19 +120,15 @@ var mytable = ee('table', false, false, [
 ```
 This will give you the following returned object:
 ```
-{
-  'root': '[object HTMLTableElement]',
-  'children': ['[object Object]'],
-  'links': {
-    'inputname': '[object HTMLInputElement]',
-    'submitrow': '[object HTMLTableRowElement]',
-    'submitrow_submitbtn': '[object HTMLInputElement]'
-  }
-}
+mytable                         - [object HTMLTableElement]
+mytable.childLinks              - {inputname: input, submitrow: tr}
+mytable.$inputname              - <input type="text" value="Mike">
+mytable.$submitrow              - <tr>...</tr>
+mytable.$submitrow.$submitbtn   - <input type="button" value="Change">
 ```
 Now you can get all the variables and add additional functions to them.
 ```
-mytable.links.submitrow_submitbtn.addEventListener('click', function(){
-  console.log('Changing Name to: ' + mytable.links.inputname.value);
+mytable.$submitrow.$submitbtn.addEventListener('click', function(){
+  console.log('Changing Name to: ' + mytable.$inputname.value);
 });
 ```
