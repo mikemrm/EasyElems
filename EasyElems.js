@@ -61,15 +61,28 @@ function EasyElems(tag, keys, attribs, children, linkName){
 	}
 	// Used to traverse objects
 	function getPath(obj, path){
+		var forceall = path.indexOf('!!') == path.length - 2;
+		if(forceall)
+			path = path.substring(0, path.length - 2);
 		var directives = path.split('.');
 		var previous_directive = null;
 		var current_directive = obj;
 		var dir;
 		for(var j = 0; j < directives.length; j++){
 			dir = directives[j];
+			var force = dir.indexOf('!') == dir.length - 1;
+			if(force)
+				dir = dir.substring(0, dir.length - 1);
+
 			if(current_directive[dir] != undefined){
 				previous_directive = current_directive;
 				current_directive = current_directive[dir];
+			} else if(force || forceall){
+				previous_directive = current_directive;
+				if(j != directives.length - 1){
+					previous_directive[dir] = {};
+					current_directive = previous_directive[dir];
+				}
 			} else
 				return null;
 			
